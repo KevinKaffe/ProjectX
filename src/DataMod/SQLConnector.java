@@ -124,9 +124,8 @@ public class SQLConnector {
 		}
 	}
 	
-	public static void getSessions() throws SQLException {
-		System.out.println("1");
-		ResultSet rs = getResultSet("SELECT * FROM Økt");
+	public static void getSessions(int antall) throws SQLException {
+		ResultSet rs = getResultSet(String.format("SELECT * FROM Økt ORDER BY ØktID DESC LIMIT %d", antall));
 		while (rs.next()) {
 			System.out.println("ID    Dato    Tidspunkt   Varighet PF P Notat");
 			System.out.println(String.format("%d %s %s %d %d %d %s", rs.getInt("ØktID"),
@@ -138,6 +137,18 @@ public class SQLConnector {
 			rs.getString("Notat")));	
 		}
 	}
+	
+	public static void getSessions() throws SQLException {
+		ResultSet rs = getResultSet("SELECT ØktID, Dato, Tidspunkt FROM Økt");
+		while (rs.next()) {
+			System.out.println("ID    Dato    Tidspunkt");
+			System.out.println(String.format("%d %s %s", rs.getInt("ØktID"),
+			rs.getString("Dato"),
+			rs.getString("Tidspunkt")));
+		}
+	}
+	
+	
 	
 }
 
