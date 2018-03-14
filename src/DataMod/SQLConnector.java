@@ -83,7 +83,7 @@ public class SQLConnector {
 		try {
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%s','%s', '%d','%d','%s','%d')", date, time, form, performance, note, duration));
+			statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%s','%s', '%d','%d','%s','%d')", date, time, form, performance, note, duration));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
@@ -92,7 +92,7 @@ public class SQLConnector {
 	public static int createExercise(String name, int id) throws SQLException{
 		Connection conn = SQLConnector.getConnection();
 		Statement statement = conn.createStatement();
-		statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%s', '%d')", name, id));
+		statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%s', '%d')", name, id));
 		ResultSet genKey = statement.getGeneratedKeys();
 		if (genKey.next()) {
         	return genKey.getInt(1);
@@ -106,7 +106,7 @@ public class SQLConnector {
 			int ex_id = SQLConnector.createExercise(name, id);
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%d','%s')", ex_id, desc));
+			statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%d','%s')", ex_id, desc));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
@@ -118,17 +118,17 @@ public class SQLConnector {
 			int ex_id = SQLConnector.createExercise(name, id);
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%d','%d', '%d', '%d')", ex_id, set, weight, apparatus));
+			statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%d','%d', '%d', '%d')", ex_id, set, weight, apparatus));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
 	}
 	
 	public static void getSessions(int antall) throws SQLException {
-		ResultSet rs = getResultSet(String.format("SELECT * FROM Økt ORDER BY ØktID DESC LIMIT %d", antall));
+		ResultSet rs = getResultSet(String.format("SELECT * FROM Okt ORDER BY OktID DESC LIMIT %d", antall));
 		while (rs.next()) {
 			System.out.println("ID    Dato    Tidspunkt   Varighet PF P Notat");
-			System.out.println(String.format("%d %s %s %d %d %d %s", rs.getInt("ØktID"),
+			System.out.println(String.format("%d %s %s %d %d %d %s", rs.getInt("OktID"),
 			rs.getString("Dato"),
 			rs.getString("Tidspunkt"),
 			rs.getInt("Varighet"),
@@ -139,10 +139,10 @@ public class SQLConnector {
 	}
 	
 	public static void getSessions() throws SQLException {
-		ResultSet rs = getResultSet("SELECT ØktID, Dato, Tidspunkt FROM Økt");
+		ResultSet rs = getResultSet("SELECT OktID, Dato, Tidspunkt FROM Okt");
 		while (rs.next()) {
 			System.out.println("ID    Dato    Tidspunkt");
-			System.out.println(String.format("%d %s %s", rs.getInt("ØktID"),
+			System.out.println(String.format("%d %s %s", rs.getInt("OktID"),
 			rs.getString("Dato"),
 			rs.getString("Tidspunkt")));
 		}
