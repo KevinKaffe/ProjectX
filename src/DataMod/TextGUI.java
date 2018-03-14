@@ -64,6 +64,15 @@ public class TextGUI {
 	}
 	
 	private void getResultLogg() {
+		System.out.println("Er ovelsen med eller uten apparat? Tast '1' for apparat, '2' ellers.");
+		int choise = Integer.parseInt(scanner.next());
+		boolean valg;
+		if (choise == 1) {
+			valg = true;
+		} else if (choise == 2) {
+			valg = false;
+		}
+		SQLConnector.showExercises(valg);
 		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");
