@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tdt4140.gr1837.app.core.SQLConnector;
-
 
 public class SQLConnector {
 	private static String url = "jdbc:mysql://mysql.stud.ntnu.no/kevinkr_project_x";
@@ -89,8 +87,39 @@ public class SQLConnector {
 		}
 	}
 	
-	public static void createNonAppExercise() {
-		
+	public static int createExercise(String name, int id) throws SQLException{
+		Connection conn = SQLConnector.getConnection();
+		Statement statement = conn.createStatement();
+		statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%s', '%d')", name, id));
+		ResultSet genKey = statement.getGeneratedKeys();
+		if (genKey.next()) {
+        	return genKey.getInt(1);
+        }
+		throw new SQLException("wut");
+
+	}
+	public static void createNonAppExercise(String name, int id, String desc) {
+		Statement statement;
+		try {
+			int ex_id = SQLConnector.createExercise(name, id);
+			Connection conn = SQLConnector.getConnection();
+			statement = conn.createStatement();
+			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%d','%s')", ex_id, desc));
+		} catch (SQLException e) {
+			System.out.println("Noe gikk galt :(");
+		}
+	}
+	
+	public static void createAppExercise(String name, int id, int set, int weight, int apparatus) {
+		Statement statement;
+		try {
+			int ex_id = SQLConnector.createExercise(name, id);
+			Connection conn = SQLConnector.getConnection();
+			statement = conn.createStatement();
+			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%d','%d', '%d', '%d')", ex_id, set, weight, apparatus));
+		} catch (SQLException e) {
+			System.out.println("Noe gikk galt :(");
+		}
 	}
 	
 }
