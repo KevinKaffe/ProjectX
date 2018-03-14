@@ -1,5 +1,6 @@
 package DataMod;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 import DataMod.SQLConnector;
 
@@ -18,10 +19,10 @@ public class TextGUI {
 							+ "Tast '3' om du onsker aa se resultatlogg for en gitt ovelse i et gitt tidsintervell \n"
 							+ "Tast '4' om du onsker aa lage ovelsesgrupper og finne ovelser som er i samme gruppe. ");
 		int brukerValg = Integer.parseInt(scanner.next());
-		if (brukerValg == 1) {
+		if (brukerValg == 1) {		// Ferdig
 			this.registerShit();
-		} else if (brukerValg == 2) {
-			System.out.println("Hvor mange av de siste øktene ønsker du å se?");
+		} else if (brukerValg == 2) {	//Ferdig
+			System.out.println("Hvor mange av de siste oktene onsker du aa se?");
 			this.getInfoBoutSessions(scanner.nextInt());
 		} else if (brukerValg == 3) {
 			this.getResultLogg();
@@ -62,15 +63,19 @@ public class TextGUI {
 		}
 	}
 	
-	
 	private void getResultLogg() {
-		System.out.println("Your session? Horrible..");
+		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
+		int id = Integer.parseInt(scanner.next());
+		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");
+		String timeIntervall = scanner.next();
+		String[] intervallList = timeIntervall.split("=");
 	}
 	
 	private void registerSessionGroup() {
 		System.out.println("Ya feel lucky..? PUNCK!");
 	}
 	
+	// Ferdig koda og implementert
 	private void registerApparat() {
 		System.out.println("Hva heter apparatet?: ");
 		String apparat = scanner.next();
@@ -78,7 +83,8 @@ public class TextGUI {
 		String beskrivelse = scanner.next();
 		SQLConnector.createApparatus(apparat, beskrivelse);
 	}	
-
+	
+	// Ferdig koda og implementert
 	private void registerSession() {
 		System.out.println("Hva er datoen? (yyyy-mm-dd)");
 		String date = scanner.next();
@@ -102,7 +108,8 @@ public class TextGUI {
 			System.out.println("error");
 		}
 	}
-
+	
+	// Ferdig koda og implementert
 	private void registerExerciseNonApp() {
 		System.out.println("Hva heter ovelsen?");
 		String name = scanner.next();
@@ -117,7 +124,11 @@ public class TextGUI {
 	private void registerExerciseApp() {
 		System.out.println("Hva heter ovelsen?");
 		String name = scanner.next();
-		// Vis alle okter med tilhorende ID
+		try {
+			SQLConnector.getSessions();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Hva er ID'en til ovelsen?");
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Hvor mange sett?");
