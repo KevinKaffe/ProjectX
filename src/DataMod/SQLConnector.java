@@ -72,7 +72,7 @@ public class SQLConnector {
 		try {
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Apparat VALUES('%s', '%s')", name, desc));
+			statement.executeUpdate(String.format("INSERT INTO Apparat(`Navn`, `Beskrivelse`) VALUES('%s', '%s')", name, desc));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
@@ -83,7 +83,7 @@ public class SQLConnector {
 		try {
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%s','%s', '%d','%d','%s','%d')", date, time, form, performance, note, duration));
+			statement.executeUpdate(String.format("INSERT INTO Okt(`Dato`, `Tidspunkt`, `Personlig_form`, `Prestasjon`, `Notat`, `Varighet`) VALUES('%s','%s', '%d','%d','%s','%d')", date, time, form, performance, note, duration));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
@@ -123,7 +123,10 @@ public class SQLConnector {
 			System.out.println("Noe gikk galt :(");
 		}
 	}
-	
+	public static void main(String [] args) {
+		//SQLConnector.createApparatus("Bench", "BENCH THAT SHIT");
+		SQLConnector.createSession("2018-03-12", "20:00", 5, 4, "HEI", 10);
+	}
 	public static void getSessions() throws SQLException {
 		System.out.println("1");
 		ResultSet rs = getResultSet("SELECT * FROM Økt");

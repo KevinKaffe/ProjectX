@@ -1,4 +1,5 @@
 package DataMod;
+import java.sql.SQLException;
 import java.util.Scanner;
 import DataMod.SQLConnector;
 
@@ -98,6 +99,7 @@ public class TextGUI {
 		} catch (SQLException e) {
 			System.out.println("error");
 		}
+	}
 	
 	private void registerExerciseNonApp() {
 		System.out.println("Yo yo yo!");
