@@ -27,12 +27,12 @@ public class TextGUI {
 		} else if (brukerValg == 3) {
 			this.getResultLogg();
 		} else if (brukerValg == 4) {	// Ferdig
-			this.registerSessionGroup();
+			this.registerExerciseGroup();
 		} else if (brukerValg == 5) {
 			try {
 				SQLConnector.getAllExerciseGroups();
 			} catch (SQLException e) {
-			}
+		}
 		} else {
 			System.out.println("Du har ikke valgt et gyldig tall");
 		}
@@ -81,26 +81,29 @@ public class TextGUI {
 
 		System.out.println("Er ovelsen med eller uten apparat? Tast '1' for apparat, '2' ellers.");
 		int choise = Integer.parseInt(scanner.next());
-		boolean valg;
-		if (choise == 1) {
-			valg = true;
-		} else if (choise == 2) {
-			valg = false;
-		}
-
-		// Metode i SQLConnector som skal vise ovelser og ID saa bruker kan velge ID
 		// Sender inn true om den er med apparat, false om den er uten
 
-		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
-		int id = Integer.parseInt(scanner.next());
+		System.out.println("Hvilken ovelse vil du se resultatloggen til?");
+		String name = scanner.next();
 		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");
 		String timeIntervall = scanner.next();
 		// Forste element gir startdato, siste element gir sluttdato
-		String[] intervallList = timeIntervall.split("=");
+		String[] intervallList = timeIntervall.trim().split("=");
+		if (choise == 1) {
+			try {
+				SQLConnector.getAppExercise(name, intervallList[0], intervallList[1]);
+			} catch (SQLException e) {
+			}
+		} else if (choise == 2) {
+			try {
+				SQLConnector.getNonAppExercise(name, intervallList[0], intervallList[1]);
+			} catch (SQLException e) {
+			}
+		}
 	}
 	
 	// Ferdig koda og implementert
-	private void registerSessionGroup() {
+	private void registerExerciseGroup() {
 		System.out.println("Hva heter ovelsesgruppen?");
 		String name = scanner.next();
 		try {
