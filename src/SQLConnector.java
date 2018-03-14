@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tdt4140.gr1837.app.core.SQLConnector;
+
 
 public class SQLConnector {
 	private static String url = "jdbc:mysql://mysql.stud.ntnu.no/kevinkr_project_x";
@@ -63,6 +65,32 @@ public class SQLConnector {
 		} catch(SQLException e) {
 			throw e;
 		}
+	}
+	
+	public static void createApparatus(String name, String desc) {
+		Statement statement;
+		try {
+			Connection conn = SQLConnector.getConnection();
+			statement = conn.createStatement();
+			statement.executeUpdate(String.format("INSERT INTO Apparat VALUES('%s', '%s')", name, desc));
+		} catch (SQLException e) {
+			System.out.println("Noe gikk galt :(");
+		}
+	}
+	
+	public static void createSession(String date, String time, int form, int performance, String note, int duration) {
+		Statement statement;
+		try {
+			Connection conn = SQLConnector.getConnection();
+			statement = conn.createStatement();
+			statement.executeUpdate(String.format("INSERT INTO Økt VALUES('%s','%s', '%d','%d','%s','%d')", date, time, form, performance, note, duration));
+		} catch (SQLException e) {
+			System.out.println("Noe gikk galt :(");
+		}
+	}
+	
+	public static void createNonAppExercise() {
+		
 	}
 	
 }
