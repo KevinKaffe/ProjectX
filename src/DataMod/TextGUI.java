@@ -2,7 +2,6 @@ package DataMod;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-import DataMod.SQLConnector;
 
 public class TextGUI {
 
@@ -17,7 +16,8 @@ public class TextGUI {
 		System.out.println("Tast '1' om du onsker aa registrere apparater, ovelser eller treninsokt med tilhorende data.\n"
 							+ "Tast '2' om du onsker aa faa opp informasjon om N siste gjennomforte treningsokter med notater. \n"
 							+ "Tast '3' om du onsker aa se resultatlogg for en gitt ovelse i et gitt tidsintervell \n"
-							+ "Tast '4' om du onsker aa lage ovelsesgrupper og finne ovelser som er i samme gruppe. ");
+							+ "Tast '4' om du onsker aa lage ovelsesgrupper og finne ovelser som er i samme gruppe. \n"
+							+ "Tast '5' om du onsker aa see hvor mye du har trent en gruppe i forhold til andre ovelsesgrupper");
 		int brukerValg = Integer.parseInt(scanner.next());
 		if (brukerValg == 1) {		// Ferdig
 			this.registerShit();
@@ -28,6 +28,11 @@ public class TextGUI {
 			this.getResultLogg();
 		} else if (brukerValg == 4) {	// Ferdig
 			this.registerSessionGroup();
+		} else if (brukerValg == 5) {
+			try {
+				SQLConnector.getAllExerciseGroups();
+			} catch (SQLException e) {
+			}
 		} else {
 			System.out.println("Du har ikke valgt et gyldig tall");
 		}
@@ -85,7 +90,7 @@ public class TextGUI {
 
 		// Metode i SQLConnector som skal vise ovelser og ID saa bruker kan velge ID
 		// Sender inn true om den er med apparat, false om den er uten
-		SQLConnector.showExercises(valg);
+
 		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");

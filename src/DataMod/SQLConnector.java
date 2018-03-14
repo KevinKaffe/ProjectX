@@ -8,12 +8,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 
 public class SQLConnector {
@@ -153,7 +155,12 @@ public class SQLConnector {
 	public static void main(String [] args) {
 		//SQLConnector.createApparatus("Bench", "BENCH THAT SHIT");
 			//System.out.println(SQLConnector.createExercise("KE", 1));
-				SQLConnector.getSimilarExercises(1);
+				try {
+					SQLConnector.getAllExerciseGroups();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 	
 	public static void getSessions(int antall) throws SQLException {
@@ -241,7 +248,29 @@ public class SQLConnector {
 		}
 	}
 	
-	
+	public static void getAllExerciseGroups() throws SQLException{
+		ResultSet rs = getResultSet("SELECT GruppeID FROM Ovelsesgruppe");
+		List<Integer> exerciseGroups = new ArrayList<>();
+		List<Integer> exercisePErcentage = new ArrayList<>();
+		while (rs.next()) {
+			exerciseGroups.add(rs.getInt("GruppeID"));
+		}
+		for(int i:exerciseGroups) {
+			rs = getResultSet("SELECT COUNT(OvelseID) AS C FROM OvGruppe WHERE GruppeID="+i);
+			rs.next();
+			exercisePErcentage.add(rs.getInt("C"));
+		}
+		double sum = 0;
+		for(int i : exercisePErcentage) {
+			sum+=i;
+		}
+		DecimalFormat numberFormat = new DecimalFormat("#0.0");
+		for(int i=0; i < exerciseGroups.size(); i++) {
+			rs = getResultSet("SELECT * FROM Ovelsesgruppe WHERE GruppeID="+exerciseGroups.get(i));
+			rs.next();
+			System.out.println(rs.getString("GruppeNavn")+": "+ numberFormat.format((100*exercisePErcentage.get(i)/sum))+"%");
+		}
+	}
 	
 	
 	
