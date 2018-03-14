@@ -64,6 +64,12 @@ public class TextGUI {
 	
 	private void getResultLogg() {
 		System.out.println("Your session? Horrible..");
+		try {
+			SQLConnector.getAppExercise("Bench", "2018-09-09", "2018-11-11");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void registerSessionGroup() {
