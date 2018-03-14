@@ -21,12 +21,12 @@ public class TextGUI {
 		int brukerValg = Integer.parseInt(scanner.next());
 		if (brukerValg == 1) {		// Ferdig
 			this.registerShit();
-		} else if (brukerValg == 2) {	//Ferdig
+		} else if (brukerValg == 2) {	// Ferdig
 			System.out.println("Hvor mange av de siste oktene onsker du aa se?");
 			this.getInfoBoutSessions(scanner.nextInt());
 		} else if (brukerValg == 3) {
 			this.getResultLogg();
-		} else if (brukerValg == 4) {
+		} else if (brukerValg == 4) {	// Ferdig
 			this.registerSessionGroup();
 		} else {
 			System.out.println("Du har ikke valgt et gyldig tall");
@@ -63,6 +63,7 @@ public class TextGUI {
 		}
 	}
 	
+	// Nesten ferdig koda og implementert
 	private void getResultLogg() {
 		System.out.println("Er ovelsen med eller uten apparat? Tast '1' for apparat, '2' ellers.");
 		int choise = Integer.parseInt(scanner.next());
@@ -72,16 +73,26 @@ public class TextGUI {
 		} else if (choise == 2) {
 			valg = false;
 		}
+		// Metode i SQLConnector som skal vise ovelser og ID saa bruker kan velge ID
+		// Sender inn true om den er med apparat, false om den er uten
 		SQLConnector.showExercises(valg);
 		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");
 		String timeIntervall = scanner.next();
+		// Forste element gir startdato, siste element gir sluttdato
 		String[] intervallList = timeIntervall.split("=");
 	}
 	
+	// Ferdig koda og implementert
 	private void registerSessionGroup() {
-		System.out.println("Ya feel lucky..? PUNCK!");
+		System.out.println("Hva heter ovelsesgruppen?");
+		String name = scanner.next();
+		try {
+			SQLConnector.createExerciseGroup(name);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	// Ferdig koda og implementert
@@ -103,10 +114,12 @@ public class TextGUI {
 		int form = Integer.parseInt(scanner.next());
 		System.out.println("Paa en skala fra 1-10, hvor bra gikk okten?: ");
 		int perf = Integer.parseInt(scanner.next());
-		System.out.println("Skriv et kjapt notat om okten: ");
-		String note = scanner.next();
 		System.out.println("Hvor lang tid tok okten, i minutter?: ");
 		int dur = Integer.parseInt(scanner.next());
+		// Dummy nextline() som fanger opp '\n', må være der!
+		String noteUseless = scanner.nextLine();
+		System.out.println("Skriv et kjapt notat om okten: ");
+		String note = scanner.nextLine();
 		SQLConnector.createSession(date, time, form, perf, note, dur);
 	}
 	
@@ -118,7 +131,7 @@ public class TextGUI {
 		}
 	}
 	
-	// Ferdig koda og implementert
+	// Ferdig koda og implementert, nesten
 	private void registerExerciseNonApp() {
 		System.out.println("Hva heter ovelsen?");
 		String name = scanner.next();
@@ -126,7 +139,10 @@ public class TextGUI {
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Angi en kort beskrivelse av ovelsen");
 		String note = scanner.next();
-		SQLConnector.createNonAppExercise(name, id, note);
+		// Maa vise ovelsesgrupper med ID
+		System.out.println("Hva er ID'en til ovelsesgruppa?");
+		int id1 = Integer.parseInt(scanner.next());
+		SQLConnector.createNonAppExercise(name, id, id1, note);
 	}
 	
 	// Maa bare legge inn tabeller som viser nodvendig informasjon
