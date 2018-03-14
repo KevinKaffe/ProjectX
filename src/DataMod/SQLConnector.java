@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class SQLConnector {
@@ -90,43 +91,69 @@ public class SQLConnector {
 		}
 	}
 	
-	public static int createExercise(String name, int id) throws SQLException{
+	public static void createExerciseGroupLink(int ex_id, int group_id) throws SQLException {
 		Connection conn = SQLConnector.getConnection();
 		Statement statement = conn.createStatement();
-		statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%s', '%d')", name, id));
+		statement.executeUpdate(String.format("INSERT INTO OvGruppe(`GruppeID`, `OvelseID`) VALUES('%d', '%d')", group_id, ex_id));
+
+	}
+	
+	public static int createExercise(String name, int session_id) throws SQLException{
+		Connection conn = SQLConnector.getConnection();
+		Statement statement = conn.createStatement();
+		statement.executeUpdate(String.format("INSERT INTO Ovelse(`OvelseNavn`, `OktID`) VALUES('%s', '%d')", name, session_id),Statement.RETURN_GENERATED_KEYS);
 		ResultSet genKey = statement.getGeneratedKeys();
 		if (genKey.next()) {
         	return genKey.getInt(1);
         }
 		throw new SQLException("wut");
-
 	}
-	public static void createNonAppExercise(String name, int id, String desc) {
+	
+	public static int createExerciseGroup(String name) throws SQLException {
+		Connection conn = SQLConnector.getConnection();
+		Statement statement = conn.createStatement();
+		statement.executeUpdate(String.format("INSERT INTO Ovelsesgruppe(`GruppeNavn`) VALUES('%s')", name),Statement.RETURN_GENERATED_KEYS);
+		ResultSet genKey = statement.getGeneratedKeys();
+		if (genKey.next()) {
+        	return genKey.getInt(1);
+        }
+		throw new SQLException("wut");
+	}
+	
+	public static void createNonAppExercise(String name, int session_id, int group_id, String desc) {
 		Statement statement;
 		try {
-			int ex_id = SQLConnector.createExercise(name, id);
+			int ex_id = SQLConnector.createExercise(name, session_id);
+			SQLConnector.createExerciseGroupLink(ex_id, group_id);
 			Connection conn = SQLConnector.getConnection();
 			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%d','%s')", ex_id, desc));
+			statement.executeUpdate(String.format("INSERT INTO UtenAppOvelse VALUES('%d','%s')", ex_id, desc));
 		} catch (SQLException e) {
 			System.out.println("Noe gikk galt :(");
 		}
 	}
 	
-	public static void createAppExercise(String name, int id, int set, int weight, int apparatus) {
+	public static void createAppExercise(String name, int session_id, int group_id, int set, int weight, int apparatus) {
 		Statement statement;
-		try {
-			int ex_id = SQLConnector.createExercise(name, id);
-			Connection conn = SQLConnector.getConnection();
-			statement = conn.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO Okt VALUES('%d','%d', '%d', '%d')", ex_id, set, weight, apparatus));
-		} catch (SQLException e) {
-			System.out.println("Noe gikk galt :(");
-		}
-	}
+			try {
+				int ex_id = SQLConnector.createExercise(name, session_id);
+				Connection conn;
+				conn = SQLConnector.getConnection();
+				statement = conn.createStatement();
+				statement.executeUpdate(String.format("INSERT INTO AppOvelse VALUES('%d','%d', '%d', '%d')", ex_id, set, weight, apparatus));
+				System.out.println(ex_id);
+				SQLConnector.createExerciseGroupLink(ex_id, session_id);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch(Exception e) {
+				System.out.println("oops");
+			}
+}
 	public static void main(String [] args) {
 		//SQLConnector.createApparatus("Bench", "BENCH THAT SHIT");
-		SQLConnector.createSession("2018-03-12", "20:00", 5, 4, "HEI", 10);
+			//System.out.println(SQLConnector.createExercise("KE", 1));
+				SQLConnector.getSimilarExercises(1);
 	}
 	
 	public static void getSessions(int antall) throws SQLException {
@@ -150,6 +177,32 @@ public class SQLConnector {
 			System.out.println(String.format("%d %s %s", rs.getInt("OktID"),
 			rs.getString("Dato"),
 			rs.getString("Tidspunkt")));
+		}
+	}
+	
+	public static void getExerciseGroups() throws SQLException {
+		ResultSet rs = getResultSet("SELECT * FROM Ovelsesgruppe");
+		System.out.println("ID      Navn");
+		while (rs.next()) {
+			System.out.println(String.format("%d   %s", rs.getInt("GruppeID"),
+			rs.getString("GruppeNavn")
+			));
+		}
+	}
+	public static void getSimilarExercises(int group_id) {
+		ResultSet rs;
+		try {
+			rs = getResultSet("Select GruppeNavn FROM Ovelsesgruppe WHERE GruppeID="+group_id);
+			rs.next();
+			System.out.println("Navn paa ovelser i " +  rs.getString("GruppeNavn"));
+			rs = getResultSet("SELECT DISTINCT OvelseNavn FROM OvGruppe NATURAL JOIN Ovelse WHERE GruppeID="+group_id);
+			while (rs.next()) {
+				System.out.println(String.format("%s", rs.getString("OvelseNavn")
+				));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
