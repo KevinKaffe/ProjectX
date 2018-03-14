@@ -152,6 +152,15 @@ public class SQLConnector {
 		}
 	}
 	
+	public static void getApparatus() throws SQLException {
+		ResultSet rs = getResultSet("SELECT ApparatID, Navn FROM Apparat");
+		while (rs.next()) {
+			System.out.println("ID    Navn");
+			System.out.println(String.format("%d %s", rs.getInt("ApparatID"),
+					rs.getString("Navn")));
+		}
+	}
+	
 	
 	
 }
