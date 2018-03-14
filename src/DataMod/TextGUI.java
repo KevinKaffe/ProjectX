@@ -65,6 +65,15 @@ public class TextGUI {
 	
 	// Nesten ferdig koda og implementert
 	private void getResultLogg() {
+
+		System.out.println("Your session? Horrible..");
+		try {
+			SQLConnector.getAppExercise("Bench", "2018-09-09", "2018-11-11");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		System.out.println("Er ovelsen med eller uten apparat? Tast '1' for apparat, '2' ellers.");
 		int choise = Integer.parseInt(scanner.next());
 		// Sender inn true om den er med apparat, false om den er uten
@@ -113,7 +122,7 @@ public class TextGUI {
 		int perf = Integer.parseInt(scanner.next());
 		System.out.println("Hvor lang tid tok okten, i minutter?: ");
 		int dur = Integer.parseInt(scanner.next());
-		// Dummy nextline() som fanger opp '\n', må være der!
+		// Dummy nextline() som fanger opp '\n', mï¿½ vï¿½re der!
 		String noteUseless = scanner.nextLine();
 		System.out.println("Skriv et kjapt notat om okten: ");
 		String note = scanner.nextLine();
