@@ -124,5 +124,20 @@ public class SQLConnector {
 		}
 	}
 	
+	public static void getSessions() throws SQLException {
+		System.out.println("1");
+		ResultSet rs = getResultSet("SELECT * FROM Økt");
+		while (rs.next()) {
+			System.out.println("ID    Dato    Tidspunkt   Varighet PF P Notat");
+			System.out.println(String.format("%d %s %s %d %d %d %s", rs.getInt("ØktID"),
+			rs.getString("Dato"),
+			rs.getString("Tidspunkt"),
+			rs.getInt("Varighet"),
+			rs.getInt("Personlig_form"),
+			rs.getInt("Prestasjon"),
+			rs.getString("Notat")));	
+		}
+	}
+	
 }
 

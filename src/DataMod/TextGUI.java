@@ -11,9 +11,9 @@ public class TextGUI {
 	Scanner scanner = new Scanner(System.in);
 	
 	public void runProgram() {
-		System.out.println("Velkommen til GetBigMuscles treningsapp, hva onsker du å gjore? Du har fire valg!");
+		System.out.println("Velkommen til GetBigMuscles treningsapp, hva onsker du ï¿½ gjore? Du har fire valg!");
 		System.out.println("Tast '1' om du onsker aa registrere apparater, ovelser eller treninsokt med tilhorende data.\n"
-							+ "Tast '2' om du onsker aa få opp informasjon om N siste gjennomforte treningsokter med notater. \n"
+							+ "Tast '2' om du onsker aa fï¿½ opp informasjon om N siste gjennomforte treningsokter med notater. \n"
 							+ "Tast '3' om du onsker aa se resultatlogg for en gitt ovelse i et gitt tidsintervell \n"
 							+ "Tast '4' om du onsker aa lage ovelsesgrupper og finne ovelser som er i samme gruppe. ");
 		int brukerValg = Integer.parseInt(scanner.next());
@@ -59,9 +59,6 @@ public class TextGUI {
 		}
 	}
 	
-	private void getInfoBoutSessions() {
-		System.out.println("Sessssssssion");
-	}
 	
 	private void getResultLogg() {
 		System.out.println("Your session? Horrible..");
@@ -82,11 +79,11 @@ public class TextGUI {
 	private void registerSession() {
 		System.out.println("Hva er datoen? (yyyy-mm-dd)");
 		String date = scanner.next();
-		System.out.println("Når på dagen ble okten gjennomfort?: (hh:mm)");
+		System.out.println("Nï¿½r pï¿½ dagen ble okten gjennomfort?: (hh:mm)");
 		String time = scanner.next();
-		System.out.println("På en skala fra 1-10, hvor god form er du i?: ");
+		System.out.println("Pï¿½ en skala fra 1-10, hvor god form er du i?: ");
 		int form = Integer.parseInt(scanner.next());
-		System.out.println("På en skala fra 1-10, hvor bra gikk okten?: ");
+		System.out.println("Pï¿½ en skala fra 1-10, hvor bra gikk okten?: ");
 		int perf = Integer.parseInt(scanner.next());
 		System.out.println("Skriv et kjapt notat om okten: ");
 		String note = scanner.next();
@@ -94,6 +91,13 @@ public class TextGUI {
 		int dur = Integer.parseInt(scanner.next());
 		SQLConnector.createSession(date, time, form, perf, note, dur);
 	}
+	
+	private void getInfoBoutSessions() {
+		try {
+			SQLConnector.getSessions();
+		} catch (SQLException e) {
+			System.out.println("error");
+		}
 	
 	private void registerExerciseNonApp() {
 		System.out.println("Yo yo yo!");
