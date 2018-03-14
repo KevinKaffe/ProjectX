@@ -72,7 +72,7 @@ public class TextGUI {
 		} else if (choise == 2) {
 			valg = false;
 		}
-		SQLConnector.showExercises(valg);
+		//SQLConnector.showExercises(valg);
 		System.out.println("Hvilken ovelse vil du se resultatloggen til? (velg ID)");
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Innenfor hvilket tidsrom vil du se resultatloggen? (yyyy-mm-dd=yyyy-mm-dd)");
@@ -126,7 +126,9 @@ public class TextGUI {
 		int id = Integer.parseInt(scanner.next());
 		System.out.println("Angi en kort beskrivelse av ovelsen");
 		String note = scanner.next();
-		SQLConnector.createNonAppExercise(name, id, note);
+		System.out.println("Skriv ID'en til ovelsesgruppen");
+		int group_id = Integer.parseInt(scanner.next());
+		SQLConnector.createNonAppExercise(name, id, group_id, note);
 	}
 	
 	// Maa bare legge inn tabeller som viser nodvendig informasjon
