@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import DB.src.SQLConnector;
 
 public class TextGUI {
 
@@ -7,13 +8,14 @@ public class TextGUI {
 	}
 	
 	public void runProgram() {
-		System.out.println("Velkommen til GetBigMuscles treningsapp, hva ønsker du å gjøre? Du har fire valg!");
-		System.out.println("Tast '1' om du ønsker å registrere apparater, øvelser eller treninsøkt med tilhørende data.\n"
-							+ "Tast '2' om du ønsker å få opp informasjon om N siste gjennomførte treningsøkter med notater. \n"
-							+ "Tast '3' om du ønsker å se resultatlogg for en gitt øvelse i et gitt tidsintervell \n"
-							+ "Tast '4' om du ønsker å lage øvelsesgrupper og finne øvelser som er i samme gruppe. \n");
+		System.out.println("Velkommen til GetBigMuscles treningsapp, hva onsker du å gjore? Du har fire valg!");
+		System.out.println("Tast '1' om du onsker aa registrere apparater, ovelser eller treninsokt med tilhorende data.\n"
+							+ "Tast '2' om du onsker aa få opp informasjon om N siste gjennomforte treningsokter med notater. \n"
+							+ "Tast '3' om du onsker aa se resultatlogg for en gitt ovelse i et gitt tidsintervell \n"
+							+ "Tast '4' om du onsker aa lage ovelsesgrupper og finne ovelser som er i samme gruppe. \n");
 		Scanner scanner = new Scanner(System.in);
 		int brukerValg = Integer.parseInt(scanner.next());
+		scanner.close();
 		if (brukerValg == 1) {
 			this.registerShit();
 		} else if (brukerValg == 2) {
@@ -32,7 +34,18 @@ public class TextGUI {
 	}
 	
 	private void registerShit() {
-		System.out.println("Yo");
+		System.out.println("Tast '1' om du onsker aa registrere ett apparat. \n"
+							+ "Tast '2' om du onsker aa legge til en ovelse. \n"
+							+ "Tast '3' om du onsker aa legge til en treningsokt.");
+		Scanner scanner = new Scanner(System.in);
+		int brukerValg = Integer.parseInt(scanner.next());
+		if (brukerValg == 1) {
+			System.out.println("Hva heter apparatet?: ");
+			String apparat = scanner.next();
+			System.out.println("Gi en kort beskrivelse: ");
+			String beskrivelse = scanner.next();
+			this.registerApparat(apparat, beskrivelse);
+		}
 	}
 	
 	private void getInfoBoutSessions() {
@@ -45,6 +58,10 @@ public class TextGUI {
 	
 	private void registerSessionGroup() {
 		System.out.println("Ya feel lucky..? PUNCK!");
+	}
+	
+	private void registerApparat(String name, String desc) {
+		
 	}
 	
 }
