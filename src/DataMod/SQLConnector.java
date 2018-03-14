@@ -152,14 +152,7 @@ public class SQLConnector {
 	public static void main(String [] args) {
 		//SQLConnector.createApparatus("Bench", "BENCH THAT SHIT");
 			//System.out.println(SQLConnector.createExercise("KE", 1));
-			 SQLConnector.createAppExercise("ME", 2, 1,1,1, 1);
-			 try {
-				System.out.println(SQLConnector.createExerciseGroup("Chest Exercises"));
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				SQLConnector.getSimilarExercises(1);
 	}
 	
 	public static void getSessions(int antall) throws SQLException {
@@ -183,6 +176,32 @@ public class SQLConnector {
 			System.out.println(String.format("%d %s %s", rs.getInt("OktID"),
 			rs.getString("Dato"),
 			rs.getString("Tidspunkt")));
+		}
+	}
+	
+	public static void getExerciseGroups() throws SQLException {
+		ResultSet rs = getResultSet("SELECT * FROM Ovelsesgruppe");
+		System.out.println("ID      Navn");
+		while (rs.next()) {
+			System.out.println(String.format("%d   %s", rs.getInt("GruppeID"),
+			rs.getString("GruppeNavn")
+			));
+		}
+	}
+	public static void getSimilarExercises(int group_id) {
+		ResultSet rs;
+		try {
+			rs = getResultSet("Select GruppeNavn FROM Ovelsesgruppe WHERE GruppeID="+group_id);
+			rs.next();
+			System.out.println("Navn paa ovelser i " +  rs.getString("GruppeNavn"));
+			rs = getResultSet("SELECT DISTINCT OvelseNavn FROM OvGruppe NATURAL JOIN Ovelse WHERE GruppeID="+group_id);
+			while (rs.next()) {
+				System.out.println(String.format("%s", rs.getString("OvelseNavn")
+				));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
