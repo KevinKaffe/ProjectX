@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import DB.src.SQLConnector;
 
 public class TextGUI {
 
@@ -39,7 +40,11 @@ public class TextGUI {
 		Scanner scanner = new Scanner(System.in);
 		int brukerValg = Integer.parseInt(scanner.next());
 		if (brukerValg == 1) {
-			
+			System.out.println("Hva heter apparatet?: ");
+			String apparat = scanner.next();
+			System.out.println("Gi en kort beskrivelse: ");
+			String beskrivelse = scanner.next();
+			this.registerApparat(apparat, beskrivelse);
 		}
 	}
 	
@@ -53,6 +58,10 @@ public class TextGUI {
 	
 	private void registerSessionGroup() {
 		System.out.println("Ya feel lucky..? PUNCK!");
+	}
+	
+	private void registerApparat(String name, String desc) {
+		
 	}
 	
 }
