@@ -1,4 +1,5 @@
 package DataMod;
+import java.sql.SQLException;
 import java.util.Scanner;
 import DataMod.SQLConnector;
 
@@ -20,7 +21,8 @@ public class TextGUI {
 		if (brukerValg == 1) {
 			this.registerShit();
 		} else if (brukerValg == 2) {
-			this.getInfoBoutSessions();
+			System.out.println("Hvor mange av de siste øktene ønsker du å se?");
+			this.getInfoBoutSessions(scanner.nextInt());
 		} else if (brukerValg == 3) {
 			this.getResultLogg();
 		} else if (brukerValg == 4) {
@@ -92,13 +94,13 @@ public class TextGUI {
 		SQLConnector.createSession(date, time, form, perf, note, dur);
 	}
 	
-	private void getInfoBoutSessions() {
+	private void getInfoBoutSessions(int antall) {
 		try {
-			SQLConnector.getSessions();
+			SQLConnector.getSessions(antall);
 		} catch (SQLException e) {
 			System.out.println("error");
 		}
-	
+	}
 	private void registerExerciseNonApp() {
 		System.out.println("Yo yo yo!");
 	}
